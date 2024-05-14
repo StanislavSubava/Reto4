@@ -135,13 +135,14 @@ public class AlbumArtista extends JFrame {
 
         for (int i = 0; i < cantidadCanciones; i++) {
             canciones cancion = canciones.get(i);
-            String nombreCancion = cancion.getNombre();
+            String nombreCancion = cancion.getNombreA();
             String duracionCancion = cancion.getDuracion();
+           
             formato1 += nombreCancion + " - " + duracionCancion + "\n\n";
 
             // Actualizar la duración total
             String[] partesDuracion = duracionCancion.split(":");
-            int minutos = Integer.parseInt(partesDuracion[1]);
+            int minutos = Integer.parseInt(partesDuracion[0]);
             duracionTotalMinutos += minutos;
         }
 

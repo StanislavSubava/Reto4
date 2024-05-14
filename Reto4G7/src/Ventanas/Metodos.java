@@ -14,6 +14,7 @@ import Clases.albums;
 import Clases.artistaClase;
 import Clases.artistas;
 import Clases.canciones;
+import Clases.podcasters;
 import ModeloMysql.conexionMYSQL;
 
 public class Metodos {
@@ -93,7 +94,7 @@ public class Metodos {
 	public ArrayList<canciones> obtenerCanciones(String idAlbum) {
 		// TODO Auto-generated method stub
 	    ArrayList<canciones> canciones = new ArrayList<canciones>();
-	    String sql = "SELECT A.Nombre AS NombreCancion, A.Duracion, C.IDAlbum, A.Tipo FROM audios A INNER JOIN canciones C ON A.IDAudio = C.IDAudio WHERE A.Tipo = 'Cancion' AND C.IDAlbum = '"+ idAlbum+"' ";
+	    String sql = "SELECT a.NombreA AS NombreCancion, a.Duracion, c.IDAlbum, a.Tipo FROM audios a INNER JOIN canciones c ON a.IDAudio = c.IDAudio WHERE a.Tipo = 'Cancion' AND c.IDAlbum = '"+ idAlbum+"' ";
         try (Connection conn = conexionMYSQL.metodoConexion()) {
             PreparedStatement st = conn.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -103,7 +104,7 @@ public class Metodos {
             	String drcn = rs.getString("Duracion");
             	String idAlbum1 = rs.getString("IDAlbum");
             	String tipo = rs.getString("Tipo");
-            	cancion.setNombre(nmbrcncn);
+            	cancion.setNombreA(nmbrcncn);
             	cancion.setDuracion(drcn);
             	cancion.setIDAlbum(idAlbum1);
             	cancion.setTipo(tipo);
@@ -121,12 +122,70 @@ public class Metodos {
 		
 		return canciones;
 	}
+	public ArrayList<podcasters> obtenerPodCaster() {
+		// TODO Auto-generated method stub
+		ArrayList<podcasters> podcasters = new ArrayList<podcasters>();
+		String sql ="SELECT * FROM podcaster";
+		 try (Connection conn = conexionMYSQL.metodoConexion()) {
+	            PreparedStatement st = conn.prepareStatement(sql);
+	            ResultSet rs = st.executeQuery();
+	            while (rs.next()) {
+	            	podcasters podcast = new podcasters();
+	            	String idPodcsat = rs.getString("IDPodcaster");
+	            	String nmbr = rs.getString("NombreArtistico");
+	            	String img = rs.getString("Imagen");
+	            	String dscrpcn = rs.getString("DescripcionPodcaster");
+	            	podcast.setIDPodcasters(idPodcsat);
+	            	podcast.setNombreArtistico(nmbr);
+	            	podcast.setImagen(img);
+	            	podcast.setDescripcionPodcasters(dscrpcn);
+	            	podcasters.add(podcast);
+	            }
+	            rs.close();
+	            st.close();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(null, "Error inesperado: " + ex.getMessage());
+	        }
+			
+			return podcasters;
+		}
 
-    }
-    
- 
-   
-    
+	public ArrayList<canciones> obtenerPodcasts(String idPodcasters) {
+	    ArrayList<canciones> podcasts = new ArrayList<canciones>();
+	    System.out.println(idPodcasters);
+	    String sql = "SELECT a.IDAudio, a.NombreA, a.Duracion, a.Tipo, a.EnlazeAudio " +
+	                 "FROM audios a " +
+	                 "JOIN podcast p ON a.IDAudio = p.IDAudio " +
+	                 "WHERE a.Tipo = 'podcast' AND p.IDPodcaster = ?";
+	    try (Connection conn = conexionMYSQL.metodoConexion()) {
+	        PreparedStatement st = conn.prepareStatement(sql);
+	        st.setString(1, idPodcasters); // Establecer el valor del marcador de posición
+	        ResultSet rs = st.executeQuery();
+	        while (rs.next()) {
+	            canciones pdcast = new canciones();
+	            pdcast.setIDAudio(rs.getString("IDAudio"));
+	            pdcast.setNombreA(rs.getString("NombreA"));
+	            pdcast.setDuracion(rs.getString("Duracion"));
+	            pdcast.setTipo(rs.getString("Tipo"));
+	            pdcast.setEnlazeAudio(rs.getString("EnlazeAudio"));
+	            podcasts.add(pdcast);
+	        }
+	        rs.close();
+	        st.close();
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(null, "Error inesperado: " + ex.getMessage());
+	    }
+	    return podcasts;
+	}
 
+}
 	
 	
