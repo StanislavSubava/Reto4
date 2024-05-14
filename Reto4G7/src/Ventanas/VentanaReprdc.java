@@ -7,9 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Clases.albums;
 import Clases.artistas;
+import Clases.canciones;
 
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -50,22 +53,41 @@ public class VentanaReprdc extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnNewButtonn = new JButton("Atras");
-		btnNewButtonn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			
-				VentanaLogin obj = new VentanaLogin();
-				System.out.println(obj);
-				dispose();
-			}
-		});
-		btnNewButtonn.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButtonn.setBounds(10, 58, 138, 47);
-		
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 690, 461);
 		contentPane.add(panel);
 		panel.setLayout(null);
+		
+		JButton btnNewButton = new JButton("Atras");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				VentanaLogin obj = new VentanaLogin();
+				obj.setVisible(true);
+				dispose();
+			}
+		});
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnNewButton.setBounds(0, 0, 90, 47);
+		panel.add(btnNewButton);
+		
+		JButton btnPerfil = new JButton("Perfil");
+		btnPerfil.setIcon(new ImageIcon("usuu.jpg"));
+		//btnPerfil.setIcon(new ImageIcon(VentanaMenuUser.class.getResource("usuu.png")));
+		btnPerfil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				
+				VentanaPerfil obj = new VentanaPerfil();
+				obj.setVisible(true);
+				dispose();
+			}
+		});
+		btnPerfil.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnPerfil.setBounds(618, 0, 90, 58);
+		panel.add(btnPerfil);
+		
+		
 		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setBounds(119, 43, 420, 232);
@@ -101,8 +123,10 @@ public class VentanaReprdc extends JFrame {
 		textField.setColumns(10);
 	}
 
-	 void mostrarInformacion(String fotoAlbum) {
+
+	public void mostrarInformacion(albums albumActual, ArrayList<canciones> canciones) {
 		// TODO Auto-generated method stub
+		
 		
 	}
 }

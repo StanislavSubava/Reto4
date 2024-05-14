@@ -178,10 +178,14 @@ public class AlbumArtista extends JFrame {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                	 JButton botonPresionado = (JButton) e.getSource(); // Obtener el botón que desencadenó el evento
+                     String nombreCancion = botonPresionado.getText();
+                     System.out.println("Canción seleccionada: " + nombreCancion);
                       String fotoAlbum = albumActual.getImagen();
                       String nombreAlbum = albumActual.getTitulo();
+                      System.out.println(nombreAlbum);
                     VentanaReprdc obj = new VentanaReprdc();
-                    obj.mostrarInformacion(fotoAlbum);
+                    obj.mostrarInformacion(albumActual,canciones);
                     obj.setVisible(true);
                     dispose();
                 }

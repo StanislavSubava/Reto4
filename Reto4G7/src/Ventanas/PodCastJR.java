@@ -158,10 +158,25 @@ contentPane.setLayout(null);
             button.setPreferredSize(new Dimension(180, 30)); // Establece el tamaño preferido del botón
             button.setFont(new Font("Tahoma", Font.PLAIN, 12)); // Ajusta el tamaño de la fuente del texto en el botón
             buttonPanel.add(button);
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {   
+                    VentanaReprdc obj = new VentanaReprdc();
+                    obj.setVisible(true);
+                    dispose();
+                }
             
+            });
+        }    
+       
             
 	}
-	}
+	
+	
+	
+	
+	
+	
 	private void setlblNombre(String nmbr) {
 		// TODO Auto-generated method stub
 		lblNombre.setText(nmbr);
@@ -172,16 +187,4 @@ contentPane.setLayout(null);
 		txtrDscrpcn.setText(formato);
 	}
 	
-	
-
-	public void crearBotones(String idPodcasters) {
-		// TODO Auto-generated method stub
-		Metodos metodo = new Metodos();
-	
-	   
-		  
-		
-		
-	}
-
 }
