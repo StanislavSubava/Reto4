@@ -1,0 +1,192 @@
+package Ventanas;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+import Clases.albumActual;
+import Clases.albums;
+import Clases.canciones;
+import ModeloMysql.conexionMYSQL;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import java.util.ArrayList;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+public class AlbumArtista extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JLabel lblftoAlbm;
+    private JTextArea textAreaInfmAlbm;
+    private JTextArea textAreaNmbr;
+    private JPanel panel;
+    private   JPanel buttonPanel;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    AlbumArtista frame = new AlbumArtista();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public AlbumArtista(albums albumActual, ArrayList<canciones> cancion) {
+    	Metodos metodo = new Metodos();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 706, 500);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        panel = new JPanel();
+        panel.setBounds(0, 0, 690, 461);
+        contentPane.add(panel);
+        panel.setLayout(null);
+
+        JLabel lblAlbum = new JLabel("");
+        lblAlbum.setBackground(Color.WHITE);
+        lblAlbum.setFont(new Font("Wide Latin", Font.BOLD, 20));
+        lblAlbum.setBounds(84, 11, 309, 26);
+        panel.add(lblAlbum);
+        
+        lblftoAlbm = new JLabel("");
+        lblftoAlbm.setBounds(331, 204, 318, 246);
+        panel.add(lblftoAlbm);
+
+        textAreaInfmAlbm = new JTextArea();
+        textAreaInfmAlbm.setLineWrap(true);
+        textAreaInfmAlbm.setBounds(369, 77, 251, 108);
+        panel.add(textAreaInfmAlbm);
+
+        textAreaNmbr = new JTextArea();
+        textAreaNmbr.setBounds(20, 63, 227, 22);
+        panel.add(textAreaNmbr);
+
+        JButton btnNewButton = new JButton("Atras");
+        btnNewButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                VentanaArtistas obj = new VentanaArtistas();
+                obj.setVisible(true);
+                dispose();
+            }
+        });
+        btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        btnNewButton.setBounds(0, 0, 90, 47);
+        panel.add(btnNewButton);
+
+        JButton btnPerfil = new JButton("Perfil");
+        btnPerfil.setIcon(new ImageIcon("usuu.jpg"));
+        //btnPerfil.setIcon(new ImageIcon(VentanaMenuUser.class.getResource("/img/usuu.png")));
+        btnPerfil.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                VentanaPerfil obj = new VentanaPerfil();
+                obj.setVisible(true);
+                dispose();
+            }
+        });
+        btnPerfil.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        btnPerfil.setBounds(618, 0, 90, 58);
+        panel.add(btnPerfil);
+        
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(30, 94, 204, 356);
+        panel.add(scrollPane);
+        
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(0, 1)); // Organiza los botones en una columna
+        scrollPane.setViewportView(buttonPanel);
+
+    }
+
+    public AlbumArtista() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void setlblftoAlbm(String imgAlbm) {
+        // TODO Auto-generated method stub
+    	
+    	
+    }
+    
+
+    public void mostrarInfm(ArrayList<canciones> canciones, albums albumActual) {
+        String nombre = "";
+        String formato1 = "";
+        String formato2 = "";
+        int cantidadCanciones = canciones.size();
+        String lanzamiento = albumActual.getAño();
+        
+        int duracionTotalMinutos = 0;
+        nombre += albumActual.getTitulo();
+
+        for (int i = 0; i < cantidadCanciones; i++) {
+            canciones cancion = canciones.get(i);
+            String nombreCancion = cancion.getNombre();
+            String duracionCancion = cancion.getDuracion();
+            formato1 += nombreCancion + " - " + duracionCancion + "\n\n";
+
+            // Actualizar la duración total
+            String[] partesDuracion = duracionCancion.split(":");
+            int minutos = Integer.parseInt(partesDuracion[1]);
+            duracionTotalMinutos += minutos;
+        }
+
+        formato2 += "Lanzamiento: " + lanzamiento + "\n\n" +
+                "Cantidad de Canciones: " + cantidadCanciones + "\n\n" +
+                "Duración del Álbum: " + duracionTotalMinutos + " minutos\n\n";
+
+        // Mostrar la información en los componentes de la ventana
+        settextAreaNmbr(nombre);
+        settextAreaInfmAlbm(formato2);
+        crearBotones(buttonPanel,formato1,albumActual,canciones);      
+        // Crear un JTextArea para mostrar el detalle de las canciones
+       
+    }
+
+    private void settextAreaNmbr(String nombre) {
+        // TODO Auto-generated method stub
+        textAreaNmbr.setText(nombre);
+    }
+
+    private void settextAreaInfmAlbm(String formato2) {
+        // TODO Auto-generated method stub
+        textAreaInfmAlbm.setText(formato2);
+        
+    }private void crearBotones(JPanel buttonPanel, String formato1, albums albumActual, ArrayList<canciones> canciones) {
+    	Metodos metodo = new Metodos();
+        String[] lineas = formato1.split("\n\n");
+        for (String linea : lineas) {
+            JButton button = new JButton(linea);
+            button.setPreferredSize(new Dimension(180, 30)); // Establece el tamaño preferido del botón
+            button.setFont(new Font("Tahoma", Font.PLAIN, 12)); // Ajusta el tamaño de la fuente del texto en el botón
+            buttonPanel.add(button);
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                      String fotoAlbum = albumActual.getImagen();
+                      String nombreAlbum = albumActual.getTitulo();
+                    VentanaReprdc obj = new VentanaReprdc();
+                    obj.mostrarInformacion(fotoAlbum);
+                    obj.setVisible(true);
+                    dispose();
+                }
+            
+            });
+        }    
+       
+        
+    }}
