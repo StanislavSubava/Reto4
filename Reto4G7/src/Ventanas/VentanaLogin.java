@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -192,7 +193,7 @@ public class VentanaLogin extends JFrame {
 
 	        JLabel lblfondo = new JLabel("");
 	        lblfondo.setIcon(new ImageIcon("fondolog.jpg"));
-	      //lblfondo.setIcon(new ImageIcon(VentanaLogin.class.getResource("fondolog.jpg")));
+	       lblfondo.setIcon(new ImageIcon(Paths.get("").toString()+"\\img\\fondolog.jpg"));
 	        
 	        lblfondo.setBounds(0, 0, 691, 587);
 	        panel.add(lblfondo);

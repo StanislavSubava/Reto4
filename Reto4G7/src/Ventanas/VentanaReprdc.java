@@ -12,18 +12,24 @@ import Clases.artistas;
 import Clases.canciones;
 
 import javax.swing.JLabel;
+import javax.print.attribute.standard.Media;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
+
 
 public class VentanaReprdc extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
+	private JButton btnAnterior;
+	private JTextArea textAreaInfm;
+
 
 	/**
 	 * Launch the application.
@@ -43,8 +49,9 @@ public class VentanaReprdc extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param cancionSeleccionada 
 	 */
-	public VentanaReprdc() {
+	public VentanaReprdc(canciones cancionSeleccionada) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 706, 500);
 		contentPane = new JPanel();
@@ -88,45 +95,96 @@ public class VentanaReprdc extends JFrame {
 		panel.add(btnPerfil);
 		
 		
+		JLabel lblfotAlbm = new JLabel("New label");
+		lblfotAlbm.setBounds(119, 43, 420, 232);
+		panel.add(lblfotAlbm);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(119, 43, 420, 232);
-		panel.add(lblNewLabel);
+		String audEleg = cancionSeleccionada.getEnlazeAudio();
 		
-		JButton btnNewButton = new JButton("[]|>");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton.setBounds(293, 301, 65, 40);
-		panel.add(btnNewButton);
+		JButton btnReprPausa = new JButton("[]|>");
+		btnReprPausa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {		
+		           /**if (paused) {
+	                    paused = false;
+	                    play(cancionSeleccionada.getEnlazeAudio());
+	                } else {
+	                    paused = true;
+	                    paused();
+	                }
+	             */
+			} });
+		btnReprPausa.setBounds(293, 301, 65, 40);
+		panel.add(btnReprPausa);
 		
-		JButton btnNewButton_1 = new JButton("<");
-		btnNewButton_1.setBounds(200, 301, 65, 40);
-		panel.add(btnNewButton_1);
+		btnAnterior = new JButton("<");
+		btnAnterior.setBounds(200, 301, 65, 40);
+		panel.add(btnAnterior);
 		
-		JButton btnNewButton_1_2 = new JButton(">");
-		btnNewButton_1_2.setBounds(379, 301, 65, 40);
-		panel.add(btnNewButton_1_2);
+		JButton btnSiguiente = new JButton(">");
+		btnSiguiente.setBounds(379, 301, 65, 40);
+		panel.add(btnSiguiente);
 		
-		JButton btnNewButton_2 = new JButton("♥");
-		btnNewButton_2.setBounds(474, 301, 65, 40);
-		panel.add(btnNewButton_2);
+		JButton btnmeGusta = new JButton("♥");
+		btnmeGusta.setBounds(474, 301, 65, 40);
+		panel.add(btnmeGusta);
 		
-		JButton btnNewButton_2_1 = new JButton("=");
-		btnNewButton_2_1.setBounds(119, 301, 65, 40);
-		panel.add(btnNewButton_2_1);
+		JButton btnMenu = new JButton("=");
+		btnMenu.setBounds(119, 301, 65, 40);
+		panel.add(btnMenu);
 		
-		textField = new JTextField();
-		textField.setBounds(119, 364, 420, 97);
-		panel.add(textField);
-		textField.setColumns(10);
+		textAreaInfm = new JTextArea();
+		textAreaInfm.setLineWrap(true);
+		textAreaInfm.setBounds(119, 366, 420, 95);
+		panel.add(textAreaInfm);
+
+		
 	}
-
-
-	public void mostrarInformacion(albums albumActual, ArrayList<canciones> canciones) {
+	
+	/**
+	 * Mostrar información de CANCIONES
+	 * @param albumActual
+	 * @param cancionSeleccionada
+	 */
+	public void mostrarInformacion(albums albumActual, canciones cancionSeleccionada) {
 		// TODO Auto-generated method stub
+		System.out.println(cancionSeleccionada);
+		String formato = "";
+		String audEleg = cancionSeleccionada.getEnlazeAudio();
+		String nmbrAud = cancionSeleccionada.getNombreA();
+		String nmbrAlbm = albumActual.getTitulo();
+		String drcnAud = cancionSeleccionada.getDuracion();
+		String imgAlbm = albumActual.getImagen();
+		
+		 formato += "Nombre de la canción: " + nmbrAud + "\n" +
+                "Nombre del álbum: " + nmbrAlbm + "\n" +
+                "Duración del audio: " + drcnAud;
+
+		
+		 textAreaInfm.setText(formato);
+		
+	}
+
+	
+	public VentanaReprdc() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * Mostrar información de PODCAST
+	 * @param podcast
+	 * @param podcasts
+	 */
+	public void mostrarInformacionPd(canciones podcast, ArrayList<canciones> podcasts) {
+		// TODO Auto-generated method stub
+		System.out.println(podcast);
+		String formato1 = "";
+		String nmbrPd = podcast.getNombreA();
+		String drcnPd = podcast.getDuracion();		
+		
+		formato1 = "Nombre del Podcast: " + nmbrPd + "\n" +  "Duración del PodCast: " + drcnPd;
+		textAreaInfm.setText(formato1);
 		
 		
 	}
+
 }

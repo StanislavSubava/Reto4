@@ -44,7 +44,6 @@ public class AlbumArtista extends JFrame {
     }
 
     public AlbumArtista(albums albumActual, ArrayList<canciones> cancion) {
-    	Metodos metodo = new Metodos();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 706, 500);
         contentPane = new JPanel();
@@ -115,6 +114,7 @@ public class AlbumArtista extends JFrame {
     public AlbumArtista() {
 		// TODO Auto-generated constructor stub
 	}
+    
 
 	public void setlblftoAlbm(String imgAlbm) {
         // TODO Auto-generated method stub
@@ -167,7 +167,16 @@ public class AlbumArtista extends JFrame {
         // TODO Auto-generated method stub
         textAreaInfmAlbm.setText(formato2);
         
-    }private void crearBotones(JPanel buttonPanel, String formato1, albums albumActual, ArrayList<canciones> canciones) {
+    }
+    
+    /**
+     * 
+     * @param buttonPanel
+     * @param formato1
+     * @param albumActual
+     * @param listaCanciones
+     */
+    private void crearBotones(JPanel buttonPanel, String formato1, albums albumActual, ArrayList<canciones> listaCanciones) {
     	Metodos metodo = new Metodos();
         String[] lineas = formato1.split("\n\n");
         for (String linea : lineas) {
@@ -178,20 +187,33 @@ public class AlbumArtista extends JFrame {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                	 JButton botonPresionado = (JButton) e.getSource(); // Obtener el botón que desencadenó el evento
-                     String nombreCancion = botonPresionado.getText();
-                     System.out.println("Canción seleccionada: " + nombreCancion);
-                      String fotoAlbum = albumActual.getImagen();
-                      String nombreAlbum = albumActual.getTitulo();
-                      System.out.println(nombreAlbum);
-                    VentanaReprdc obj = new VentanaReprdc();
-                    obj.mostrarInformacion(albumActual,canciones);
-                    obj.setVisible(true);
-                    dispose();
-                }
-            
-            });
+                	 JButton botonPresionado = (JButton) e.getSource();               	 
+                	 	// Tomo el nombre del boton que tiene la canción y la duración
+                	    String nombreCancion = botonPresionado.getText();
+                	    // Busco el Guión para quedarme solo con el nombre de la canción
+                	    nombreCancion = nombreCancion.substring(0, nombreCancion.indexOf("-"));
+                	    nombreCancion = nombreCancion.trim();
+
+                	    // Ahora busco la canción en la LIsta de objetos, y se la asigno al objeto cancionSeleccionada
+                	    canciones cancionSeleccionada = null;
+                	    for (canciones cancion : listaCanciones) {
+                	        if (cancion.getNombreA().equals(nombreCancion)) {
+                	            cancionSeleccionada = cancion;          	        
+                	            break;
+                	        }
+                	    }
+                	    
+                	    // EN caso de no encontrar la canción, controlo el error
+                	    if (cancionSeleccionada != null) {
+                	        VentanaReprdc obj = new VentanaReprdc(cancionSeleccionada);
+                	        obj.mostrarInformacion(albumActual, cancionSeleccionada);
+                	        obj.setVisible(true);
+                	        dispose();
+                	    } else {
+                	        JOptionPane.showMessageDialog(null, "La canción seleccionada no se encontró en la lista.");
+                	    }
+                	} /* fin del action*/            }); /* fin del listener*/
         }    
        
         
-    }}
+    }} 
