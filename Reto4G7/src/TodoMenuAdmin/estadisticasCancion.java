@@ -81,10 +81,29 @@ public class estadisticasCancion extends JFrame {
 		btnSemana.setBounds(218, 10, 138, 47);
 		btnSemana.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			/*
 				String sql = "SELECT r.IDCliente, r.IDAudio, a.Nombre, r.FechaReproduccion, r.VecesReproducida, a.Tipo "
 						+ "FROM reproducciones r " + "JOIN audios a ON r.IDAudio = a.IDAudio "
 						+ "WHERE a.Tipo = 'Cancion' " + "ORDER BY WEEK(r.FechaReproduccion);";
-
+			*/
+				String sql ="SELECT\n"
+		                + "    c.NombreC AS NombreC,\n"
+		                + "    a.NombreA AS NombreA,\n"
+		                + "    a.Duracion,\n"
+		                + "    r.FechaReproduccion,\n"
+		                + "    r.VecesReproducida,\n"
+		                + "    a.Tipo\n"
+		                + "FROM\n"
+		                + "    clientes c\n"
+		                + "JOIN\n"
+		                + "    reproducciones r ON c.IDCliente = r.IDCliente\n"
+		                + "JOIN\n"
+		                + "    audios a ON r.IDAudio = a.IDAudio\n"
+		                + "WHERE\n"
+		                + "    a.Tipo='cancion'\n"
+		                + "ORDER BY\n"
+		                + "    WEEK(r.FechaReproduccion);";
+				
 				try (Connection conn = conexionMYSQL.metodoConexion();
 						PreparedStatement st = conn.prepareStatement(sql);
 						ResultSet rs = st.executeQuery()) {
@@ -108,10 +127,28 @@ public class estadisticasCancion extends JFrame {
 		btnMes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				String sql = "SELECT r.IDCliente, r.IDAudio, a.Nombre, r.FechaReproduccion, r.VecesReproducida, a.Tipo "
+			/*	String sql = "SELECT r.IDCliente, r.IDAudio, a.Nombre, r.FechaReproduccion, r.VecesReproducida, a.Tipo "
 						+ "FROM reproducciones r " + "JOIN audios a ON r.IDAudio = a.IDAudio "
 						+ "WHERE a.Tipo = 'Cancion' " + "ORDER BY MONTH(r.FechaReproduccion);";
-
+			*/
+				
+				String sql = "SELECT\n"
+						+ "    c.NombreC AS NombreC,\n"
+						+ "    a.NombreA AS NombreA,\n"
+						+ "    a.Duracion,\n"
+						+ "    r.FechaReproduccion,\n"
+						+ "    r.VecesReproducida\n"
+						+ "FROM\n"
+						+ "    clientes c\n"
+						+ "JOIN\n"
+						+ "    reproducciones r ON c.IDCliente = r.IDCliente\n"
+						+ "JOIN\n"
+		                + "    audios a ON r.IDAudio = a.IDAudio\n"
+		                + "WHERE\n"
+		                + "    a.Tipo='cancion'\n"
+		                + "ORDER BY\n"
+		                + "    MONTH(r.FechaReproduccion);";		
+				
 				try (Connection conn = conexionMYSQL.metodoConexion();
 						PreparedStatement st = conn.prepareStatement(sql);
 						ResultSet rs = st.executeQuery()) {
@@ -137,11 +174,27 @@ public class estadisticasCancion extends JFrame {
 		btnAo.setBounds(491, 10, 138, 47);
 		btnAo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+			/*
 				String sql = "SELECT r.IDCliente, r.IDAudio, a.Nombre, r.FechaReproduccion, r.VecesReproducida, a.Tipo "
 						+ "FROM reproducciones r " + "JOIN audios a ON r.IDAudio = a.IDAudio "
 						+ "WHERE a.Tipo = 'Cancion' " + "ORDER BY YEAR(r.FechaReproduccion);";
-
+			*/
+				String sql ="SELECT\n"
+						+ "    c.NombreC AS NombreC,\n"
+						+ "    a.NombreA AS NombreA,\n"
+						+ "    a.Duracion,\n"
+						+ "    r.FechaReproduccion,\n"
+						+ "    r.VecesReproducida\n"
+						+ "FROM\n"
+						+ "    clientes c\n"
+						+ "JOIN\n"
+						+ "    reproducciones r ON c.IDCliente = r.IDCliente\n"
+						+ "JOIN\n"
+		                + "    audios a ON r.IDAudio = a.IDAudio\n"
+		                + "WHERE\n"
+		                + "    a.Tipo='cancion'\n"
+		                + "ORDER BY\n"
+		                + "    YEAR(r.FechaReproduccion);";
 				try (Connection conn = conexionMYSQL.metodoConexion();
 						PreparedStatement st = conn.prepareStatement(sql);
 						ResultSet rs = st.executeQuery()) {
@@ -169,7 +222,7 @@ public class estadisticasCancion extends JFrame {
 		table.setColumnSelectionAllowed(true);
 		table.setCellSelectionEnabled(true);
 		table.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "IDCliente", "IDAudio", "Nombre", "Fecha de Lanzamiento", "Veces Escuchadas", "Tipo" }));
+				new String[] { "Nombre Cliente", "Nombre", "Fecha de Lanzamiento", "Veces Escuchadas" }));
 		table.getColumnModel().getColumn(2).setPreferredWidth(117);
 		table.getColumnModel().getColumn(3).setPreferredWidth(97);
 		scrollPane.setViewportView(table);
@@ -182,13 +235,12 @@ public class estadisticasCancion extends JFrame {
 
 		try {
 			while (rs.next()) {
-				Object[] row = new Object[6];
-				row[0] = rs.getInt("IDCliente");
-				row[1] = rs.getInt("IDAudio");
-				row[2] = rs.getString("Nombre");
-				row[3] = rs.getString("FechaReproduccion");
-				row[4] = rs.getString("VecesReproducida");
-				row[5] = rs.getString("Tipo");
+				Object[] row = new Object[4];
+				row[0] = rs.getString("NombreC");
+				row[1] = rs.getString("NombreA");
+				row[2] = rs.getString("FechaReproduccion");
+				row[3] = rs.getString("VecesReproducida");
+				
 
 				model.addRow(row);
 			}
@@ -225,8 +277,22 @@ public class estadisticasCancion extends JFrame {
 		if (vt == null) {
 			return;
 		}
-
-		String sql = "SELECT reproducciones.IDCliente, reproducciones.IDAudio, audios.Nombre, ?, reproducciones.VecesReproducida, audios.Tipo FROM reproducciones JOIN audios ON reproducciones.IDAudio = audios.IDAudio WHERE reproducciones.FechaReproduccion = ? AND audios.Tipo = 'Cancion'";
+		
+		String sql ="SELECT\n"
+				+ "    c.NombreC AS NombreC,\n"
+				+ "    a.NombreA AS NombreA,\n"
+				+ "    a.Duracion,\n"
+				+ "    r.FechaReproduccion,\n"
+				+ "    r.VecesReproducida\n"
+				+ "FROM\n"
+				+ "    clientes c\n"
+				+ "JOIN\n"
+				+ "    reproducciones r ON c.IDCliente = r.IDCliente\n"
+				+ "JOIN\n"
+				+ "    audios a ON r.IDAudio = a.IDAudio";
+		
+		
+	//	String sql = "SELECT reproducciones.IDCliente, reproducciones.IDAudio, audios.NombreA, ?, reproducciones.VecesReproducida, audios.Tipo FROM reproducciones JOIN audios ON reproducciones.IDAudio = audios.IDAudio WHERE reproducciones.FechaReproduccion = ? AND audios.Tipo = 'Cancion'";
 
 		try (Connection conn = conexionMYSQL.metodoConexion()) {
 			PreparedStatement st = conn.prepareStatement(sql);
@@ -240,13 +306,12 @@ public class estadisticasCancion extends JFrame {
 			model.setRowCount(0);
 
 			while (rs.next()) {
-				Object[] row = new Object[6];
-				row[0] = rs.getInt("IDCliente");
-				row[1] = rs.getInt("IDAudio");
-				row[2] = rs.getString("Nombre");
-				row[4] = rs.getString("VecesReproducida");
-				row[5] = rs.getString("Tipo");
-
+				Object[] row = new Object[4];
+				row[0] = rs.getString("NombreC");
+				row[1] = rs.getString("NombreA");
+				row[2] = rs.getString("FechaReproduccion");
+				row[3] = rs.getString("VecesReproducida");
+				
 				model.addRow(row);
 			}
 
@@ -257,13 +322,13 @@ public class estadisticasCancion extends JFrame {
 	}
 
 	public void valoresTabla(List<Reproducion> reproduciones) {
-		String[] nomColumna = { "IDCliente", "IDAudio", "nombre", "Fecha de Lanzamiento", "Veces Escuchadas", "Tipo" };
+		String[] nomColumna = { "NombreC","nombreA", "Fecha de Lanzamiento", "Veces Escuchadas"};
 		model = new DefaultTableModel(nomColumna, 0);
 		table.setModel(model);
 
 		for (Reproducion reproducion : reproduciones) {
-			Object[] row = { reproducion.getIDCliente(), reproducion.getIDAudio(), reproducion.getNombre(),
-					reproducion.getFechaReproduccion(), reproducion.getVecesReproducida(), reproducion.getTipo() };
+			Object[] row = { reproducion.getNombreC(), reproducion.getNombreA(),
+					reproducion.getFechaReproduccion(), reproducion.getVecesReproducida()};
 			model.addRow(row);
 		}
 	}

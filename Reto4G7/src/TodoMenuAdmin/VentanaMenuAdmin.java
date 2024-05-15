@@ -78,8 +78,8 @@ public class VentanaMenuAdmin extends JFrame {
 		JButton gestionarMusica = new JButton("Gestionar musica");
 		gestionarMusica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String sql = "SELECT IDAudio, Nombre, TIME_TO_SEC(Duracion) AS Duracion, Tipo FROM audios WHERE Tipo = 'cancion' ";
-
+				String sql = "SELECT IDAudio, NombreA, Duracion, Tipo FROM audios WHERE Tipo='Cancion'";
+				
 				try (Connection conn = conexionMYSQL.metodoConexion()) {
 					PreparedStatement st = conn.prepareStatement(sql);
 					ResultSet rs = st.executeQuery();
@@ -114,8 +114,8 @@ public class VentanaMenuAdmin extends JFrame {
 		JButton gestionarPodcast = new JButton("Gestionar Podcast");
 		gestionarPodcast.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String sql = "SELECT IDAudio, Nombre, TIME_TO_SEC(Duracion) AS Duracion, Tipo FROM audios WHERE Tipo = 'Podcast' ";
-
+				String sql = "SELECT NombreA, Duracion, Tipo FROM audios WHERE Tipo='Podcast'";
+	
 				try (Connection conn = conexionMYSQL.metodoConexion()) {
 					PreparedStatement st = conn.prepareStatement(sql);
 					ResultSet rs = st.executeQuery();
@@ -177,9 +177,7 @@ public class VentanaMenuAdmin extends JFrame {
 			while (rs.next()) {
 
 				Cancion cancion = new Cancion();
-
-				cancion.setId(rs.getInt("IDAudio"));
-				cancion.setNombre(rs.getString("Nombre"));
+				cancion.setNombre(rs.getString("NombreA"));
 				cancion.setDuracion(rs.getString("Duracion"));
 				cancion.setTipo(rs.getString("Tipo"));
 

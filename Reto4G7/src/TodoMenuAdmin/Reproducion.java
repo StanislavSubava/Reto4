@@ -6,8 +6,9 @@ package TodoMenuAdmin;
 
 public class Reproducion {
 	private String IDCliente;
+	private String NombreC;
 	private String IDAudio;
-	private String nombre;
+	private String nombreA;
 	private String FechaReproduccion;
 	private String VecesReproducida;
 	private String Tipo;
@@ -16,12 +17,22 @@ public class Reproducion {
 
 	}
 
-	public Reproducion(String iDCliente, String iDAudio, String nombre, String fechaReproduccion,
+	public Reproducion(String NombreC, String nombreA, String fechaReproduccion, String vecesReproducida, String tipo) {
+		super();
+		this.NombreC = NombreC;
+		this.nombreA = nombreA;
+		FechaReproduccion = fechaReproduccion;
+		VecesReproducida = vecesReproducida;
+		Tipo = tipo;
+
+	}
+
+	public Reproducion(String iDCliente, String iDAudio, String nombreA, String fechaReproduccion,
 			String vecesReproducida, String tipo) {
 		super();
 		IDCliente = iDCliente;
 		IDAudio = iDAudio;
-		this.nombre = nombre;
+		this.nombreA = nombreA;
 		FechaReproduccion = fechaReproduccion;
 		VecesReproducida = vecesReproducida;
 		Tipo = tipo;
@@ -35,6 +46,14 @@ public class Reproducion {
 		IDCliente = iDCliente;
 	}
 
+	public String getNombreC() {
+		return NombreC;
+	}
+
+	public void setNombreC(String NombreC) {
+		this.NombreC = NombreC;
+	}
+
 	public String getIDAudio() {
 		return IDAudio;
 	}
@@ -43,12 +62,12 @@ public class Reproducion {
 		IDAudio = iDAudio;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getNombreA() {
+		return nombreA;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombreA(String nombreA) {
+		this.nombreA = nombreA;
 	}
 
 	public String getFechaReproduccion() {

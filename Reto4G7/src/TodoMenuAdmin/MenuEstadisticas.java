@@ -48,6 +48,7 @@ public class MenuEstadisticas extends JFrame {
 	 * difetentes tipos de canciones, podcast y plyalist Cada boton de esta pagina
 	 * ira dirigida a la misma ventan, pero con diferetes resultados.
 	 */
+	
 	public MenuEstadisticas() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 706, 626);
@@ -89,7 +90,21 @@ public class MenuEstadisticas extends JFrame {
 		JButton musica = new JButton("Top Musica más escuchada");
 		musica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String sql = "SELECT reproducciones.IDCliente, reproducciones.IDAudio, audios.Nombre, FechaReproduccion, VecesReproducida, Tipo FROM reproducciones JOIN audios ON reproducciones.IDAudio = audios.IDAudio WHERE Tipo = 'cancion'";
+				String sql = "SELECT\n"
+		                + "    c.NombreC AS NombreC,\n"
+		                + "    a.NombreA AS NombreA,\n"
+		                + "    a.Duracion,\n"
+		                + "    r.FechaReproduccion,\n"
+		                + "    r.VecesReproducida,\n"
+		                + "    a.Tipo\n"
+		                + "FROM\n"
+		                + "    clientes c\n"
+		                + "JOIN\n"
+		                + "    reproducciones r ON c.IDCliente = r.IDCliente\n"
+		                + "JOIN\n"
+		                + "    audios a ON r.IDAudio = a.IDAudio\n"
+		                + "WHERE\n"
+		                + "		a.Tipo='Cancion';";
 
 				try (Connection conn = conexionMYSQL.metodoConexion()) {
 					PreparedStatement st = conn.prepareStatement(sql);
@@ -120,8 +135,25 @@ public class MenuEstadisticas extends JFrame {
 		JButton podcast = new JButton("Top Podcast más escuchado");
 		podcast.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String sql = "SELECT reproducciones.IDCliente, reproducciones.IDAudio, audios.Nombre, FechaReproduccion, VecesReproducida, Tipo FROM reproducciones JOIN audios ON reproducciones.IDAudio = audios.IDAudio WHERE Tipo = 'Podcast'";
-
+			/*	String sql = "SELECT reproducciones.IDCliente, reproducciones.IDAudio, audios.Nombre, FechaReproduccion, VecesReproducida, Tipo FROM reproducciones JOIN audios ON reproducciones.IDAudio = audios.IDAudio WHERE Tipo = 'Podcast'";
+			*/
+				String sql = "SELECT\n"
+		                + "    c.NombreC AS NombreC,\n"
+		                + "    a.NombreA AS NombreA,\n"
+		                + "    a.Duracion,\n"
+		                + "    r.FechaReproduccion,\n"
+		                + "    r.VecesReproducida,\n"
+		                + "    a.Tipo\n"
+		                + "FROM\n"
+		                + "    clientes c\n"
+		                + "JOIN\n"
+		                + "    reproducciones r ON c.IDCliente = r.IDCliente\n"
+		                + "JOIN\n"
+		                + "    audios a ON r.IDAudio = a.IDAudio\n"
+		                + "WHERE\n"
+		                + "		a.Tipo='Podcast';";
+				
+				
 				try (Connection conn = conexionMYSQL.metodoConexion()) {
 					PreparedStatement st = conn.prepareStatement(sql);
 					ResultSet rs = st.executeQuery();
@@ -140,7 +172,6 @@ public class MenuEstadisticas extends JFrame {
 					JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
 					ex.printStackTrace();
 				}
-
 			}
 		});
 		podcast.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -151,15 +182,32 @@ public class MenuEstadisticas extends JFrame {
 		JButton musicaYpodcast = new JButton("Top más escuchado");
 		musicaYpodcast.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String sql = "SELECT reproducciones.IDCliente, reproducciones.IDAudio, audios.Nombre, FechaReproduccion, VecesReproducida, Tipo FROM reproducciones JOIN audios ON reproducciones.IDAudio = audios.IDAudio";
-
+			/*	String sql = "SELECT reproducciones.IDCliente, reproducciones.IDAudio, audios.Nombre, FechaReproduccion, VecesReproducida, Tipo FROM reproducciones JOIN audios ON reproducciones.IDAudio = audios.IDAudio";
+			*/
+	
+				String sql = "SELECT\n"
+			            + "    c.NombreC AS NombreC,\n"
+			            + "    a.NombreA AS NombreA,\n"
+			            + "    a.Duracion,\n"
+			            + "    r.FechaReproduccion,\n"
+			            + "    r.VecesReproducida,\n"
+			            + "    a.Tipo\n"
+			            + "FROM\n"
+			            + "    clientes c\n"
+			            + "JOIN\n"
+			            + "    reproducciones r ON c.IDCliente = r.IDCliente\n"
+			            + "JOIN\n"
+			            + "    audios a ON r.IDAudio = a.IDAudio\n"
+			            + "WHERE\n"
+			            + "    a.Tipo IN ('Cancion', 'Podcast');";
+				
 				try (Connection conn = conexionMYSQL.metodoConexion()) {
 					PreparedStatement st = conn.prepareStatement(sql);
 					ResultSet rs = st.executeQuery();
 
 					List<Reproducion> reproduciones = crearListaReproducion(rs);
 
-					estadisticasCancion obj = new estadisticasCancion();
+					estadisticasTotal obj = new estadisticasTotal();
 					obj.valoresTabla(reproduciones);
 					obj.setVisible(true);
 					dispose();
@@ -171,13 +219,14 @@ public class MenuEstadisticas extends JFrame {
 					JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
 					ex.printStackTrace();
 				}
-
+			
 			}
 		});
 		musicaYpodcast.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		musicaYpodcast.setBounds(84, 344, 502, 53);
 		panel.add(musicaYpodcast);
 
+		
 		/*
 		 * Canciones que esten en mi PlayList NO ESTA HECHO, no se que poner
 		 */
@@ -205,11 +254,9 @@ public class MenuEstadisticas extends JFrame {
 
 		try {
 			while (rs.next()) {
-				Reproducion Reproducion = new Reproducion();
-
-				Reproducion.setIDCliente(rs.getString("IDCliente"));
-				Reproducion.setIDAudio(rs.getString("IDAudio"));
-				Reproducion.setNombre(rs.getString("Nombre"));
+				Reproducion Reproducion = new Reproducion();	
+				Reproducion.setNombreC(rs.getString("NombreC"));
+				Reproducion.setNombreA(rs.getString("NombreA"));
 				Reproducion.setFechaReproduccion(rs.getString("FechaReproduccion"));
 				Reproducion.setVecesReproducida(rs.getString("VecesReproducida"));
 				Reproducion.setTipo(rs.getString("Tipo"));
@@ -222,5 +269,5 @@ public class MenuEstadisticas extends JFrame {
 		}
 		return reproduciones;
 	}
-
+	
 }

@@ -48,8 +48,8 @@ public class gestion extends JFrame {
 	}
 
 	/**
-	 * En esta ventana se podra gestionar la tabla metida en el textArea, podiendo modificar el 
-	 * nombre, eliminar la fila o crear una nueva
+	 * En esta ventana se podra gestionar la tabla metida en el textArea, podiendo
+	 * modificar el nombre, eliminar la fila o crear una nueva
 	 */
 	public gestion() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,7 +57,7 @@ public class gestion extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setTitle("Ventana de Gestion");
-		
+
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
@@ -83,23 +83,22 @@ public class gestion extends JFrame {
 		panel.add(scrollPane);
 
 		table = new JTable();
-		table.setModel(
-				new DefaultTableModel(new Object[][] {}, new String[] { "IDAudio", "Nombre", "Duracion", "Tipo" }));
+		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Nombre", "Duracion", "Tipo" }));
 		scrollPane.setViewportView(table);
-/*
- * Se genera las tablas con los valores en la tabla que esta encima
- */
+		/*
+		 * Se genera las tablas con los valores en la tabla que esta encima
+		 */
 		valoresTabla(getDummyCanciones());
-		
-		
+
 		/*
 		 * Boton de Crear una fila para poder escribir los valores de la nueva cancion,
-		 * Se aparece un boton que permite la consulta de añadir la cancion a la base de datos
+		 * Se aparece un boton que permite la consulta de añadir la cancion a la base de
+		 * datos
 		 */
 		JButton crear = new JButton("Crear");
 		crear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object[] row = { "", "", "", "" };
+				Object[] row = { "", "", "" };
 				model.addRow(row);
 				añadir.setVisible(true);
 				table.editCellAt(model.getRowCount() - 1, 0);
@@ -113,39 +112,51 @@ public class gestion extends JFrame {
 		 */
 		JButton eliminar = new JButton("Eliminar");
 		eliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int selectedRow = table.getSelectedRow();
+		    public void actionPerformed(ActionEvent e) {
+		        int selectedRow = table.getSelectedRow();
 
-				if (selectedRow >= 0) {
-					int confirm = JOptionPane.showConfirmDialog(null,
-							"¿Estás seguro de que quieres eliminar esta canción?", "Confirmar eliminación",
-							JOptionPane.YES_NO_OPTION);
+		        if (selectedRow >= 0) {
+		            int confirm = JOptionPane.showConfirmDialog(null,
+		                    "¿Estás seguro de que quieres eliminar esta canción?", "Confirmar eliminación",
+		                    JOptionPane.YES_NO_OPTION);
 
-					if (confirm == JOptionPane.YES_OPTION) {
-						int idAudio = (int) model.getValueAt(selectedRow, 0);
+		            if (confirm == JOptionPane.YES_OPTION) {
+		       
+		                String sqlCanciones = "DELETE FROM canciones WHERE IDAudio = ?";
 
-						String sql = "DELETE FROM audios WHERE IDAudio = ?";
+		                try (Connection conn = conexionMYSQL.metodoConexion();
+		                     PreparedStatement stCanciones = conn.prepareStatement(sqlCanciones)) {
+		                	
+		                	stCanciones.setString(1, sqlCanciones);
+		                    stCanciones.executeUpdate(sqlCanciones);
 
-						try (Connection conn = conexionMYSQL.metodoConexion();
-								PreparedStatement st = conn.prepareStatement(sql)) {
+		                    // Now delete the audio file
+		                    String sqlAudios = "DELETE FROM audios WHERE IDAudio = ?";
 
-							st.setInt(1, idAudio);
-							st.executeUpdate();
+		                    try (PreparedStatement stAudios = conn.prepareStatement(sqlAudios)) {
 
-							JOptionPane.showMessageDialog(null, "Canción eliminada correctamente.");
+		                    	stAudios.setString(1, sqlAudios);
+		                        stAudios.executeUpdate(sqlAudios);
 
-							// Recarga los datos de la tabla
-							cargarDatos();
+		                        JOptionPane.showMessageDialog(null, "Canción eliminada correctamente.");
 
-						} catch (SQLException ex) {
-							JOptionPane.showMessageDialog(null, "Error al eliminar la canción: " + ex.getMessage());
-							ex.printStackTrace();
-						}
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna canción.");
-				}
-			}
+		                        // Recarga los datos de la tabla
+		                        cargarDatos();
+
+		                    } catch (SQLException ex) {
+		                        JOptionPane.showMessageDialog(null, "Error al eliminar la canción: " + ex.getMessage());
+		                        ex.printStackTrace();
+		                    }
+
+		                } catch (SQLException ex) {
+		                    JOptionPane.showMessageDialog(null, "Error al eliminar la canción: " + ex.getMessage());
+		                    ex.printStackTrace();
+		                }
+		            }
+		        } else {
+		            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna canción.");
+		        }
+		    }
 		});
 		eliminar.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		eliminar.setBounds(484, 218, 176, 39);
@@ -162,10 +173,12 @@ public class gestion extends JFrame {
 
 				if (selectedRow >= 0) {
 					DefaultTableModel model = (DefaultTableModel) table.getModel();
-					int idAudio = (int) model.getValueAt(selectedRow, 0);
+					String idAudio = (String) model.getValueAt(selectedRow, 0);
+					
 					String nuevoNombre = (String) JOptionPane.showInputDialog(null, "Ingrese el nuevo nombre:",
 							"Modificar audio", JOptionPane.PLAIN_MESSAGE, null, null,
-							(String) model.getValueAt(selectedRow, 1));
+							(String) model.getValueAt(selectedRow, 0));
+					
 					Time nuevaDuracion = new Time(Integer.parseInt((String) model.getValueAt(selectedRow, 2)) * 1000);
 
 					if (nuevoNombre != null) {
@@ -176,7 +189,6 @@ public class gestion extends JFrame {
 
 							st.setString(1, nuevoNombre);
 							st.setTime(2, nuevaDuracion);
-							st.setInt(3, idAudio);
 
 							int rowsAffected = st.executeUpdate();
 
@@ -222,25 +234,27 @@ public class gestion extends JFrame {
 					List<Cancion> canciones = new ArrayList<>();
 					for (int i = 0; i < lineaCount; i++) {
 
-						String nombre = (String) table.getValueAt(i, 1);
-
-						String duracion = (String) table.getValueAt(i, 2);
+						String nombre = (String) table.getValueAt(i, 0);
+						String duracion = (String) table.getValueAt(i, 1);
+						String Tipo = (String) table.getValueAt(i, 2);
 
 						if (!nombre.isEmpty() && duracion != null && !duracion.isEmpty()) {
 							Cancion cancion = new Cancion();
 							cancion.setNombre(nombre);
 							cancion.setDuracion(duracion);
+							cancion.setTipo(Tipo);
+
 							canciones.add(cancion);
 						}
 					}
 					if (!canciones.isEmpty()) {
-						String sql = "INSERT INTO audios (Nombre, Duracion, Tipo) VALUES (?, ?, ?)";
+						String sql = "INSERT INTO audios (NombreA, Duracion, Tipo) VALUES (?, ?, ?)";
 						try (Connection conn = conexionMYSQL.metodoConexion()) {
 							PreparedStatement st = conn.prepareStatement(sql);
 							for (Cancion cancion : canciones) {
 								st.setString(1, cancion.getNombre());
 								st.setString(2, cancion.getDuracion());
-								st.setString(3, "cancion");
+								st.setString(3, cancion.getTipo());
 								st.addBatch();
 							}
 							st.executeBatch();
@@ -267,11 +281,11 @@ public class gestion extends JFrame {
 	}
 
 	/*
-	 * Recarga los datos de la tabla con todos los datos nuevos y solo modificando los que se
-	 * cambian
+	 * Recarga los datos de la tabla con todos los datos nuevos y solo modificando
+	 * los que se cambian
 	 */
 	private void cargarDatos() {
-		String sql = "SELECT * FROM audios WHERE Tipo = 'Cancion'";
+		String sql = "SELECT NombreA, Duracion, Tipo FROM audios WHERE Tipo='Podcast'";
 
 		try (Connection conn = conexionMYSQL.metodoConexion();
 				PreparedStatement st = conn.prepareStatement(sql);
@@ -281,12 +295,11 @@ public class gestion extends JFrame {
 			model.setRowCount(0);
 
 			while (rs.next()) {
-				Object[] row = new Object[5];
-				row[0] = rs.getInt("IDAudio");
-				row[1] = rs.getString("Nombre");
+				Object[] row = new Object[2];
+				row[0] = rs.getString("Nombre");
+				row[1] = rs.getString("Duracion");
+				row[2] = rs.getString("Tipo");
 
-				row[2] = rs.getString("Duracion");
-				row[3] = rs.getString("Tipo");
 				model.addRow(row);
 			}
 
@@ -297,22 +310,22 @@ public class gestion extends JFrame {
 
 	}
 
-/*
- * Genera la tabla con sus columnas
- */
+	/*
+	 * Genera la tabla con sus columnas
+	 */
 	void valoresTabla(List<Cancion> canciones) {
-		model = new DefaultTableModel(new String[] { "IDAudio", "Nombre", "Duracion", "Tipo" }, 0);
+		model = new DefaultTableModel(new String[] { "Nombre", "Duracion", "Tipo" }, 0);
 		table.setModel(model);
 
 		for (Cancion cancion : canciones) {
-			Object[] row = { cancion.getId(), cancion.getNombre(), cancion.getDuracion(), cancion.getTipo() };
+			Object[] row = { cancion.getNombre(), cancion.getDuracion(), cancion.getTipo() };
 			model.addRow(row);
 		}
 	}
 
-/*
- * Clase para poder coger las canciones desde una clase
- */
+	/*
+	 * Clase para poder coger las canciones desde una clase
+	 */
 	private List<Cancion> getDummyCanciones() {
 		List<Cancion> canciones = new ArrayList<>();
 		return canciones;

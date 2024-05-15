@@ -11,8 +11,22 @@ public class Cancion {
     private String duracion;
     private String Tipo;
   	
-    public Cancion() {
+
+    
+    public Cancion(){
     	
+    }
+    
+    public Cancion(String nombre) {
+    	super();
+    	this.nombre = nombre;
+    }
+    
+    public Cancion(String Nombre, String duracion, String Tipo){
+    	super();
+		this.nombre = Nombre;
+		this.duracion = duracion;
+		this.Tipo= Tipo;
     }
     
 	public Cancion(int id, String nombre, String duracion, String Tipo) {
