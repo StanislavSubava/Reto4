@@ -29,13 +29,13 @@ public class VentanaRegistro extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JTextField textNom;
-    private JTextField textApe;
-    private JTextField textUser;
-    private JTextField textFechNa;
-    private JTextField textFechIns;
-    private JPasswordField textContra;
-    private JPasswordField textRContra;
+    public JTextField textNom;
+    public JTextField textApe;
+    public JTextField textUser;
+    public JTextField textFechNa;
+    public JTextField textFechIns;
+    public JPasswordField textContra;
+    public JPasswordField textRContra;
     private JLabel lblPremium;
 
     /**

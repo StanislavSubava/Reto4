@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Clases.albums;
-import Clases.artistas;
 import Clases.canciones;
 
 import javax.swing.JLabel;
@@ -56,9 +55,9 @@ public class VentanaReprdc extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 690, 461);
 		contentPane.add(panel);
-		panel.setLayout(null);
 		
 		JButton btnNewButton = new JButton("Atras");
+		btnNewButton.setBounds(10, 9, 99, 40);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
@@ -67,11 +66,12 @@ public class VentanaReprdc extends JFrame {
 				dispose();
 			}
 		});
+		panel.setLayout(null);
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton.setBounds(0, 0, 90, 47);
 		panel.add(btnNewButton);
 		
 		JButton btnPerfil = new JButton("Perfil");
+		btnPerfil.setBounds(618, 0, 90, 58);
 		btnPerfil.setIcon(new ImageIcon("usuu.jpg"));
 		//btnPerfil.setIcon(new ImageIcon(VentanaMenuUser.class.getResource("usuu.png")));
 		btnPerfil.addActionListener(new ActionListener() {
@@ -84,7 +84,6 @@ public class VentanaReprdc extends JFrame {
 			}
 		});
 		btnPerfil.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnPerfil.setBounds(618, 0, 90, 58);
 		panel.add(btnPerfil);
 		
 		
@@ -93,12 +92,11 @@ public class VentanaReprdc extends JFrame {
 		lblNewLabel.setBounds(119, 43, 420, 232);
 		panel.add(lblNewLabel);
 		
-		JButton btnNewButton = new JButton("[]|>");
+		JButton btnNewButton1 = new JButton("[]|>");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton.setBounds(293, 301, 65, 40);
 		panel.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("<");

@@ -7,6 +7,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+
+import ModeloMysql.conexionMYSQL;
+import TodoMenuAdmin.Cancion;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -14,24 +18,32 @@ import java.awt.Font;
 import javax.swing.JTextArea;
 
 import java.awt.event.ActionListener;
-
+import java.io.BufferedReader;
 import java.io.File;
-
+import java.io.FileReader;
 import java.io.FileWriter;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import java.util.Date;
-import java.util.Objects;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class GestionPlayList extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	protected static final String ModeloMysql = null;
 	private JPanel contentPane;
 	private JTextArea textArea;
+	protected String localizacion;
 
 	/**
 	 * Launch the application.
@@ -80,7 +92,8 @@ public class GestionPlayList extends JFrame {
 
 		JButton btnPerfil = new JButton("Perfil");
 		btnPerfil.setIcon(new ImageIcon("usuu.jpg"));
-		//btnPerfil.setIcon(new ImageIcon(VentanaMenuUser.class.getResource("/img/usuu.png")));
+		// btnPerfil.setIcon(new
+		// ImageIcon(VentanaMenuUser.class.getResource("/img/usuu.png")));
 		btnPerfil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentanaPerfil obj = new VentanaPerfil();
@@ -103,9 +116,47 @@ public class GestionPlayList extends JFrame {
 		JButton btnCrearLista = new JButton("Crear nueva Lista");
 		btnCrearLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListaPlayList obj = new ListaPlayList();
-				obj.setVisible(true);
-				dispose();
+				
+				String sql = "SELECT NombreA FROM audios;";
+
+				try (Connection conn = conexionMYSQL.metodoConexion()) {
+					PreparedStatement st = conn.prepareStatement(sql);
+					ResultSet rs = st.executeQuery();
+
+					List<Cancion> canciones = crearListaCanciones(rs);
+
+					listPlayList obj = new listPlayList();
+					obj.valoresTablaCancion(canciones);
+					obj.setVisible(true);
+					dispose();
+
+					rs.close();
+					st.close();
+
+				} catch (SQLException ex) {
+					JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
+					ex.printStackTrace();
+
+				}
+			}
+
+			private List<Cancion> crearListaCanciones(ResultSet rs) {
+				List<Cancion> canciones = new ArrayList<>();
+
+				try {
+					while (rs.next()) {
+						Cancion Cancion = new Cancion();
+						Cancion.setNombre(rs.getString("nombreA"));					
+
+						canciones.add(Cancion);
+					}
+				} catch (SQLException ex) {
+
+					ex.printStackTrace();
+				}
+				return canciones;
+
+			
 			}
 		});
 		btnCrearLista.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -127,23 +178,50 @@ public class GestionPlayList extends JFrame {
 		 */
 		JButton btnExportar = new JButton("Exportar");
 		btnExportar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String localizacion = "C:\\Users\\in1dm3\\git\\Reto4_Main\\Reto4_Grupo7\\src\\archivosTXT";
+			public void actionPerformed(ActionEvent event) {
+				File directorio = new File(directorioExportar());
+				File[] File = directorio.listFiles();
+				File ultimoSubido = null;
+				long ultimoModificado = 0;
 
-				File file = FileUtiles.getMostRecentFile(localizacion, "txt");
-				if (Objects.nonNull(file)) {
-					String fileContents = FileUtiles.readFile(file);
-					if (fileContents != null) {
-						FileUtiles.displayFileContents(fileContents, textArea);
-					} else {
-						System.err.println("Error al buscar el archivo");
+				if (File != null) {
+					for (File file : File) {
+						if (file.isFile() && file.lastModified() > ultimoModificado) {
+							ultimoSubido = file;
+							ultimoModificado = file.lastModified();
+						}
+					}
+				}
+
+				if (ultimoSubido != null) {
+					try {
+						File file = new File(ultimoSubido.getAbsolutePath());
+						FileReader lectorFile = new FileReader(file);
+						BufferedReader bufferRead = new BufferedReader(lectorFile);
+						StringBuilder stringBuilder = new StringBuilder();
+						String line;
+
+						while ((line = bufferRead.readLine()) != null) {
+							stringBuilder.append(line).append("\n");
+						}
+
+						textArea.setText(stringBuilder.toString());
+						bufferRead.close();
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
 				} else {
-					System.err.println("No se ha encontrado directorio.");
+					System.out.println("No files found in the directory");
 				}
 			}
-		});
 
+			private String directorioExportar() {
+				Path localizacion = Paths.get("C:", "Users", "in1dm3", "Desktop", "carpeta", "RETO4GP7.zip_expanded",
+						"Reto4G7", "txt", "archivosTXT");
+
+				return localizacion.getParent().toString();
+			}
+		});
 		// -------------------------------------------------------------------------
 		btnExportar.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnExportar.setBounds(370, 367, 298, 58);
@@ -154,11 +232,14 @@ public class GestionPlayList extends JFrame {
 		 */
 		JButton btnImportar = new JButton("Importar");
 		btnImportar.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
-				String localizacion = "C:\\Users\\in1dm3\\git\\Reto4_Main\\Reto4_Grupo7\\src\\archivosTXT";
+
+				String localizacion = directorio();
 
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 				String tiempo = sdf.format(new Date());
+
 				String nombreArchivo = "MiMusica_" + tiempo + ".txt";
 				File file = new File(localizacion, nombreArchivo);
 
@@ -169,41 +250,26 @@ public class GestionPlayList extends JFrame {
 					JOptionPane.showMessageDialog(null, "Error al guardar el archivo: " + ex.getMessage());
 				}
 			}
+
+			private String directorio() {
+				Path localizacion = Paths.get("C:", "Users", "in1dm3", "Desktop", "carpeta", "RETO4GP7.zip_expanded",
+						"Reto4G7", "txt", "archivosTXT");
+
+				return localizacion.getParent().toString();
+			}
+
 		});
 		btnImportar.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnImportar.setBounds(370, 479, 298, 58);
 		panel.add(btnImportar);
 
 	}
-	/*
-	 * //Metodos para exportar protected File getMostRecentFile(String localizacion,
-	 * String string) { File directory = new File(localizacion); File[] files =
-	 * directory.listFiles(); if (files == null || files.length == 0) { return null;
-	 * } File mostRecentFile = files[0]; for (int i = 1; i < files.length; i++) {
-	 * File file = files[i]; Date lastModified = new Date(file.lastModified()); if
-	 * (lastModified.getTime() > mostRecentFile.lastModified()) { mostRecentFile =
-	 * file; } } return mostRecentFile; }
-	 * 
-	 * protected String readFile(File file) { try (BufferedReader reader = new
-	 * BufferedReader(new FileReader(file))) { StringBuilder content = new
-	 * StringBuilder(); String line; while ((line = reader.readLine()) != null) {
-	 * content.append(line).append("\n"); } return content.toString(); } catch
-	 * (IOException e) { System.err.println("Error al ver el archivo: " +
-	 * e.getMessage()); return null; } }
-	 * 
-	 * protected void displayFileContents(String fileContents, JTextArea textArea2)
-	 * { textArea.setText(fileContents); }
-	 */
 //________________________________________________
 
 //Envia el texto al textArea
-	public void setTextArea(ArrayList<String> listaCanciones) {
-		StringBuilder text = new StringBuilder();
-		for (String cancion : listaCanciones) {
-			text.append(cancion);
-		}
-		textArea.setText(text.toString());
-
+	public void setTextArea(String textCopiado) {
+		textArea.setText(textCopiado);
+		
 	}
 
 }
