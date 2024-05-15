@@ -7,14 +7,15 @@ import java.sql.SQLException;
 public class conexionMYSQL {
 
 	public static Connection metodoConexion() throws SQLException {
-/*
-		String usuario = "mañana";
-		String contraseña = "elorrieta";
-		String host = "localhost:33060";
+/*	
+		String SERVIDOR_DB = "jdbc:mysql://localhost:33061/";
+		String NOMBRE_DB = "grupo7_reto4";
+		String USUARIO = "root";
+		String CONTRASEÑA = "elorrieta";
 
-		return DriverManager.getConnection("jdbc:mysql://" + host + "/grupo7_reto4", usuario, contraseña);
+		return DriverManager.getConnection(SERVIDOR_DB + NOMBRE_DB, USUARIO, CONTRASEÑA);
 */
-		
+	
 		  String SERVIDOR_DB = "jdbc:mysql://domainreto4.duckdns.org:3306/"; 		  
 		  String NOMBRE_DB = "grupo7_reto4"; 
 		  String USUARIO = "mikel"; 
