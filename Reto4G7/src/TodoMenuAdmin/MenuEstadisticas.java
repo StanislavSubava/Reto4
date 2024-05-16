@@ -64,6 +64,7 @@ public class MenuEstadisticas extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 
+
 		JButton btnNewButton = new JButton("Atras");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

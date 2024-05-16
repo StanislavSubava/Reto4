@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
 
-public class gestion extends JFrame {
+public class gestionPodcast extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -39,7 +39,7 @@ public class gestion extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					gestion frame = new gestion();
+					gestionPodcast frame = new gestionPodcast();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,7 +52,7 @@ public class gestion extends JFrame {
 	 * En esta ventana se podra gestionar la tabla metida en el textArea, podiendo
 	 * modificar el nombre, eliminar la fila o crear una nueva
 	 */
-	public gestion() {
+	public gestionPodcast() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 706, 626);
 		contentPane = new JPanel();
@@ -173,7 +173,7 @@ public class gestion extends JFrame {
 					    nombre = ""; // or some default value
 					}
 
-				//	int duracion = (int) table.getValueAt(lineaSelec, 2);
+			//		int duracion = (int) table.getValueAt(lineaSelec, 2);
 
 					int confirmResultNom = JOptionPane.showConfirmDialog(null,
 							"¿Estás seguro de que deseas modificar el nombre de esta canción?", "Confirmar eliminación",
@@ -262,7 +262,7 @@ public class gestion extends JFrame {
 				List<Cancion> canciones = new ArrayList<>();
 				canciones.add(cancion);
 
-				String sql = "INSERT INTO audios (NombreA, Duracion, Tipo) VALUES (?,?, 'Cancion')";
+				String sql = "INSERT INTO audios (NombreA, Duracion, Tipo) VALUES (?,?, 'Podcast')";
 
 				try (Connection conn = conexionMYSQL.metodoConexion()) {
 					PreparedStatement st = conn.prepareStatement(sql);
@@ -317,7 +317,7 @@ public class gestion extends JFrame {
 	 * los que se cambian
 	 */
 	private void recargarTabla() {
-		String sql = "SELECT IDAudio, NombreA, Duracion, Tipo FROM audios WHERE Tipo='Cancion'";
+		String sql = "SELECT IDAudio, NombreA, Duracion, Tipo FROM audios WHERE Tipo='Podcast'";
 
 		try (Connection conn = conexionMYSQL.metodoConexion()) {
 			PreparedStatement st = conn.prepareStatement(sql);
@@ -325,7 +325,7 @@ public class gestion extends JFrame {
 
 			List<Cancion> canciones = crearListaCanciones(rs);
 
-			gestion obj = new gestion();
+			gestionPodcast obj = new gestionPodcast();
 			obj.valoresTabla(canciones);
 			obj.setVisible(true);
 			dispose();

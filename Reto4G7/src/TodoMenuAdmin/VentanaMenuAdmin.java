@@ -114,15 +114,15 @@ public class VentanaMenuAdmin extends JFrame {
 		JButton gestionarPodcast = new JButton("Gestionar Podcast");
 		gestionarPodcast.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String sql = "SELECT NombreA, Duracion, Tipo FROM audios WHERE Tipo='Podcast'";
-	
+				String sql = "SELECT IDAudio, NombreA, Duracion, Tipo FROM audios WHERE Tipo='Podcast'";
+				
 				try (Connection conn = conexionMYSQL.metodoConexion()) {
 					PreparedStatement st = conn.prepareStatement(sql);
 					ResultSet rs = st.executeQuery();
 
 					List<Cancion> canciones = crearListaCanciones(rs);
 
-					gestion obj = new gestion();
+					gestionPodcast obj = new gestionPodcast();
 					obj.valoresTabla(canciones);
 					obj.setVisible(true);
 					dispose();
@@ -134,6 +134,8 @@ public class VentanaMenuAdmin extends JFrame {
 					JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
 					ex.printStackTrace();
 				}
+				
+	 
 			}
 		});
 		gestionarPodcast.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -177,8 +179,9 @@ public class VentanaMenuAdmin extends JFrame {
 			while (rs.next()) {
 
 				Cancion cancion = new Cancion();
+				cancion.setId(rs.getInt("IDAudio"));
 				cancion.setNombre(rs.getString("NombreA"));
-				cancion.setDuracion(rs.getString("Duracion"));
+				cancion.setDuracion(rs.getInt("Duracion"));
 				cancion.setTipo(rs.getString("Tipo"));
 
 				canciones.add(cancion);
