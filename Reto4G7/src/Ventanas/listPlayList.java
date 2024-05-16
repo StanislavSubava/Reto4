@@ -103,13 +103,6 @@ public class listPlayList extends JFrame {
 		JButton btnAñadirLista = new JButton("Añadir a la lista");
 		btnAñadirLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 
-				 String Gusta = "Select nombreA FROM audio nombrea=?"; 
-				 
-				 
-				 
-				 */
 				
 				 int[] lineaSelec = table.getSelectedRows();
 				 
