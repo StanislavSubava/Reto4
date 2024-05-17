@@ -71,6 +71,7 @@ public class VentanaMenuAdmin extends JFrame {
 		atras.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		atras.setBounds(48, 89, 138, 47);
 		panel.add(atras);
+		
 		/**
 		 * Boton que al presionar se dirige a la pantalla de gestionarMusica con los
 		 * datos de las canciones en el

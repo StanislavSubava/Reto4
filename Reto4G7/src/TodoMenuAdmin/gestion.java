@@ -73,6 +73,7 @@ public class gestion extends JFrame {
 				VentanaMenuAdmin obj = new VentanaMenuAdmin();
 				obj.setVisible(true);
 				dispose();
+				
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -203,15 +204,17 @@ public class gestion extends JFrame {
 
 			        st.setString(1, nuevoNombre);
 			        st.setInt(2, idAudio);
-
-			        int rowsAffected = st.executeUpdate();
-
+			
+			      
+			         st.executeUpdate();
+			        
+/*
 			        if (rowsAffected > 0) {
 			            System.out.println("El nombre se ha cambiado perfectamente");
 			        } else {
 			            System.out.println("No se ha actualizado.");
 			        }
-
+*/
 			    } catch (SQLException e) {
 			        System.out.println("Error al modificar los datos: " + e.getMessage());
 			    }
