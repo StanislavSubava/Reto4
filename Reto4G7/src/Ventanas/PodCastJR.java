@@ -136,7 +136,7 @@ contentPane.setLayout(null);
 			 String[] partesDuracion = drcnAud.split(":");
 	            int minutos = Integer.parseInt(partesDuracion[0]);
 	            duracionTotalMinutos += minutos;
-	            crearBotones(podcast,buttonPanel,formato1);
+	            crearBotones(podcast,buttonPanel,formato1, podcasts);
 		}
 		
 		String formato = "";
@@ -150,7 +150,7 @@ contentPane.setLayout(null);
 		
 	}
 
-	private void crearBotones(canciones podcast, JPanel buttonPanel2, String formato1) {
+	private void crearBotones(canciones podcast, JPanel buttonPanel2, String formato1, ArrayList<canciones> podcasts) {
 		// TODO Auto-generated method stub
         String[] lineas = formato1.split("\n\n");
         for (String linea : lineas) {
@@ -160,8 +160,9 @@ contentPane.setLayout(null);
             buttonPanel.add(button);
             button.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {   
-                    VentanaReprdc obj = new VentanaReprdc();
+                public void actionPerformed(ActionEvent e) { 
+                    VentanaReprdc obj = new VentanaReprdc(podcast,podcasts);
+                    obj.mostrarInformacionPd(podcast,podcasts);                    
                     obj.setVisible(true);
                     dispose();
                 }
@@ -171,12 +172,6 @@ contentPane.setLayout(null);
        
             
 	}
-	
-	
-	
-	
-	
-	
 	private void setlblNombre(String nmbr) {
 		// TODO Auto-generated method stub
 		lblNombre.setText(nmbr);

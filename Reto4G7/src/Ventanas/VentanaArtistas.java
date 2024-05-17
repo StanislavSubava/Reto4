@@ -4,8 +4,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
-import java.sql.*;
 import java.util.ArrayList;
 import Clases.*;
 
@@ -61,7 +59,7 @@ public class VentanaArtistas extends JFrame {
 
         JButton btnPerfil = new JButton("Perfil");
         btnPerfil.setIcon(new ImageIcon("usuu.jpg"));
-       // btnPerfil.setIcon(new ImageIcon(VentanaMenuUser.class.getResource("/img/usuu.png")));
+        //btnPerfil.setIcon(new ImageIcon(VentanaMenuUser.class.getResource("//img//usuu.png")));
         btnPerfil.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 VentanaPerfil obj = new VentanaPerfil();

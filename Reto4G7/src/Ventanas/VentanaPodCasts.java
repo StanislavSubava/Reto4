@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Clases.albums;
+
 import Clases.canciones;
 import Clases.podcasters;
 
@@ -22,9 +22,6 @@ public class VentanaPodCasts extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JButton btnJR;
-
-
 	/**
 	 * Launch the application.
 	 */
@@ -103,7 +100,7 @@ public class VentanaPodCasts extends JFrame {
 	    	  podcasters pdcast = podcasters.get(i);
 	    	  String nmbr = pdcast.getNombreArtistico();
 	    	  String idPodcasters = pdcast.getIDPodcasters();
-	    	  String dscrpcn =pdcast.getDescripcionPodcasters();
+	    	  
 	    	  String img =pdcast.getImagen();
 	    	  
 	    	  img = img.trim();

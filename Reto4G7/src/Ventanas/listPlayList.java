@@ -105,7 +105,7 @@ public class listPlayList extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				 int[] lineaSelec = table.getSelectedRows();
-				 
+			 
 			        if (lineaSelec.length > 0) {
 			            StringBuilder nombreTable = new StringBuilder();
 			            for (int i = 0; i < lineaSelec.length; i++) {

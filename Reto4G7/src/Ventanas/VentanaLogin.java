@@ -69,6 +69,7 @@ public class VentanaLogin extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setTitle("Ventana Login");
 
 		panel = new JPanel();
 		panel.setBounds(0, 0, 690, 587);

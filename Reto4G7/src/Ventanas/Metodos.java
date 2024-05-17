@@ -1,19 +1,15 @@
-
 package Ventanas;
-import java.awt.Dimension;
-import java.awt.Font;
+
 import java.sql.*;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
+
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 
 import Clases.albums;
 import Clases.artistaClase;
-import Clases.artistas;
+
 import Clases.canciones;
 import Clases.podcasters;
 import ModeloMysql.conexionMYSQL;
@@ -95,7 +91,7 @@ public class Metodos {
 	public ArrayList<canciones> obtenerCanciones(String idAlbum) {
 		// TODO Auto-generated method stub
 	    ArrayList<canciones> canciones = new ArrayList<canciones>();
-	    String sql = "SELECT a.NombreA AS NombreCancion, a.Duracion, c.IDAlbum, a.Tipo FROM audios a INNER JOIN canciones c ON a.IDAudio = c.IDAudio WHERE a.Tipo = 'Cancion' AND c.IDAlbum = '"+ idAlbum+"' ";
+	    String sql = "SELECT a.NombreA AS NombreCancion, a.Duracion, c.IDAlbum,  a.EnlazeAudio ,  a.Tipo FROM audios a INNER JOIN canciones c ON a.IDAudio = c.IDAudio WHERE a.Tipo = 'Cancion' AND c.IDAlbum = '"+ idAlbum+"' ";
         try (Connection conn = conexionMYSQL.metodoConexion()) {
             PreparedStatement st = conn.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -105,10 +101,12 @@ public class Metodos {
             	String drcn = rs.getString("Duracion");
             	String idAlbum1 = rs.getString("IDAlbum");
             	String tipo = rs.getString("Tipo");
+                String enlazeAud = rs.getString("EnlazeAudio");
             	cancion.setNombreA(nmbrcncn);
             	cancion.setDuracion(drcn);
             	cancion.setIDAlbum(idAlbum1);
             	cancion.setTipo(tipo);
+            	cancion.setEnlazeAudio(enlazeAud);
                 canciones.add(cancion);
             }
             rs.close();

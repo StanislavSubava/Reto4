@@ -18,7 +18,6 @@ public class VentanaMenuUser extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	
 
 	/**
 	 * Launch the application.
@@ -44,19 +43,20 @@ public class VentanaMenuUser extends JFrame {
 		setBounds(100, 100, 706, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setTitle("Menu User");
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 691, 587);
 		contentPane.add(panel);
 		panel.setLayout(null);
-		
+
 		JButton btnNewButton = new JButton("Atras");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+
 				VentanaLogin obj = new VentanaLogin();
 				obj.setVisible(true);
 				dispose();
@@ -65,14 +65,14 @@ public class VentanaMenuUser extends JFrame {
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton.setBounds(0, 0, 90, 47);
 		panel.add(btnNewButton);
-		
+
 		JButton btnPerfil = new JButton("Perfil");
 		btnPerfil.setIcon(new ImageIcon("usuu.jpg"));
-		//btnPerfil.setIcon(new ImageIcon(VentanaMenuUser.class.getResource("usuu.png")));
+		// btnPerfil.setIcon(new
+		// ImageIcon(VentanaMenuUser.class.getResource("usuu.png")));
 		btnPerfil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
-				
+
 				VentanaPerfil obj = new VentanaPerfil();
 				obj.setVisible(true);
 				dispose();
@@ -81,65 +81,63 @@ public class VentanaMenuUser extends JFrame {
 		btnPerfil.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnPerfil.setBounds(618, 0, 90, 58);
 		panel.add(btnPerfil);
-		
-		
+
 		JLabel lblNewLabel = new JLabel("Selecciona");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(158, 97, 354, 47);
 		panel.add(lblNewLabel);
-		
+
 		JButton btnNewButton_1 = new JButton("Musica");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				VentanaArtistas obj = new VentanaArtistas();
-				  obj.setVisible(true);
+				obj.setVisible(true);
 				dispose();
 			}
 		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_1.setBounds(58, 341, 120, 47);
 		panel.add(btnNewButton_1);
-		
+
 		JButton btnNewButton_1_1 = new JButton("PodCast");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				VentanaPodCasts obj = new VentanaPodCasts();
-				  obj.setVisible(true);
+				obj.setVisible(true);
 				dispose();
 			}
 		});
 		btnNewButton_1_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_1_1.setBounds(255, 341, 162, 47);
 		panel.add(btnNewButton_1_1);
-		
+
 		JButton btnPlayList = new JButton("Mi PlayList");
 		btnPlayList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {	
-				
+			public void actionPerformed(ActionEvent e) {
+
 				GestionPlayList obj = new GestionPlayList();
 				obj.setVisible(true);
-				dispose();	
+				dispose();
 			}
 		});
 		btnPlayList.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnPlayList.setBounds(477, 341, 152, 47);
 		panel.add(btnPlayList);
-		
+
 		JLabel lblMenuUser = new JLabel("Menu user");
 		lblMenuUser.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMenuUser.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblMenuUser.setBounds(158, 11, 354, 47);
 		panel.add(lblMenuUser);
-		
+
 		JLabel lblfondomenu = new JLabel("");
 		lblfondomenu.setIcon(new ImageIcon("fondomenu.jpg"));
-	//	lblfondomenu.setIcon(new ImageIcon(VentanaMenuUser.class.getResource("/img/fondomenu.png")));
+		
 		lblfondomenu.setBounds(0, 0, 691, 587);
 		panel.add(lblfondomenu);
 	}
 
-	
 }

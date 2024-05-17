@@ -15,7 +15,6 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import Clases.albums;
 import Clases.artistaClase;
-import Clases.artistas;
 import Clases.canciones;
 
 public class ArtistaKC extends JFrame {
